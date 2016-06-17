@@ -2,9 +2,11 @@ package db
 
 import (
     "fmt"
+    "log"
 
     "github.com/jinzhu/gorm"
     _ "github.com/jinzhu/gorm/dialects/postgres"
+    _ "github.com/lib/pq"
 )
 
 var (
@@ -22,7 +24,7 @@ func Init() {
     db , err = gorm.Open("postgres", postgresConnection)
 
     if err != nil {
-        panic(err)
+        log.Fatal(err)
         return
     }
 }
