@@ -2,6 +2,7 @@ package models
 
 import (
     "github.com/jinzhu/gorm"
+    "golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
@@ -13,4 +14,11 @@ type User struct {
 
 func (u *User) BeforeSave() {
     // hash password
+    hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+
+    if err != nil {
+        panic(err)
+    }
+
+    u.Password = string(hash)
 }

@@ -7,5 +7,5 @@ import (
 type Category struct {
     gorm.Model
     Name string `json:"name"`
-    Parent Category
+    ParentID int64 `json:"parent_id"`
 }

@@ -15,10 +15,13 @@ func main() {
 
     post := new(controllers.PostController)
 
-    r.GET("/posts", post.List)
-    r.POST("/posts", post.Create)
-    r.PUT("/posts/:id", post.Update)
-    r.DELETE("/posts/:id", post.Delete)
+    v1 := r.Group("/v1")
+    {
+        v1.GET("/posts", post.List)
+        v1.POST("/posts", post.Create)
+        v1.PUT("/posts/:id", post.Update)
+        v1.DELETE("/posts/:id", post.Delete)
+    }
 
     r.Run() // listen and server on 0.0.0.0:8080
 }

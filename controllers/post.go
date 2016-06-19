@@ -5,37 +5,29 @@ import (
 
     "github.com/vfreitas-/blog-api/models"
     "github.com/vfreitas-/blog-api/services"
-    "github.com/vfreitas-/blog-api/db"
 )
 
 type PostController struct {}
 
-var conn = db.GetDB()
-
-var service = new(services.PostService)
+var postService = new(services.PostService)
 
 func (ctrl PostController) Create(c *gin.Context) {
     var post models.Post
 
-    conn := db.GetDB()
-
     if c.Bind(&post) == nil {
-        conn.Create(&post)
+        postService.Create(&post)
     }
-    // service.Create(&post)
+
     c.JSON(200, post)
 }
 
 func (ctrl PostController) Update(c *gin.Context) {
     var post models.Post
 
-    conn := db.GetDB()
-
     id := c.Param("id")
-    conn.First(&post, id)
 
     if c.Bind(&post) == nil {
-        conn.Save(&post)
+        postService.Update(id, &post)
     }
 
     c.JSON(200, gin.H{
@@ -46,13 +38,9 @@ func (ctrl PostController) Update(c *gin.Context) {
 }
 
 func (ctrl PostController) Delete(c *gin.Context) {
-    var post models.Post
-
-    conn := db.GetDB()
-
     id := c.Param("id")
-    conn.First(&post, id)
-    conn.Delete(&post)
+
+    postService.Delete(id)
 
     c.JSON(200, gin.H{
         "status": 1,
@@ -61,10 +49,8 @@ func (ctrl PostController) Delete(c *gin.Context) {
 }
 
 func (ctrl PostController) List(c *gin.Context) {
-    var posts = []models.Post{}
 
-    conn := db.GetDB()
-    conn.Find(&posts)
+    posts := postService.List()
 
     c.JSON(200, posts)
 }

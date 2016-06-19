@@ -8,4 +8,5 @@ type Post struct {
     gorm.Model
     Title string `json:"title"`
     Content string `json:"content"`
+    BannerImageId int64 `json: "banner"`
 }
